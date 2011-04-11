@@ -475,7 +475,7 @@ void run(const char * cmd) {
 int rate(const char * rating) {
 	if(playfork && rating != NULL) {
 
-		if(rating[0] != 'U')
+		if(rating[0] != 'U' && rating[0] != 'S')
 			set(& track, "rating", rating);
 		else
 			set(& track, "rating", "");
