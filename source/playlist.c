@@ -31,7 +31,7 @@ int expand(struct playlist * list) {
 	char url[512], ** response, * xml = NULL;
 	const char * fmt =
 		"http://ws.audioscrobbler.com/radio/xspf.php"
-		"?sk=%s&discovery=%d&desktop=0";
+		"?sk=%s&discovery=%d&desktop=0&speed_multiplier=2.0";
 
 	assert(list != NULL);
 
