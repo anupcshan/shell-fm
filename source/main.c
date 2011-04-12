@@ -543,7 +543,7 @@ int main(int argc, char ** argv) {
 			if(!background) {
 				printf(
 					"%s%c",
-					strdup(meta("%r", M_COLORED, & track)),
+					strdup(meta("%r %p%%", M_COLORED, & track)),
 					// strdup(meta("%v", M_COLORED, & track)),
 					batch ? '\n' : '\r'
 				);

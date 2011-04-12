@@ -370,6 +370,17 @@ const char * meta(const char * fmt, int flags, struct hash * track) {
 					        (remain >= 0) ? (remain % 60) : (-remain % 60));
 					    val = strdup(calculated);
 					    break;
+					case 'p':
+						duration = atoi(value(track, "duration"));
+						remain = atoi(value(track, "remain"));
+						remain = ((duration - remain) * 100) / duration;
+						snprintf(
+							calculated,
+							sizeof(calculated),
+							"%2d",
+							remain);
+						val = strdup(calculated);
+						break;
                 	case 'v':   // volume percentage
 					    snprintf(
 					        calculated,
