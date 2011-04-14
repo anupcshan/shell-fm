@@ -407,6 +407,15 @@ const char * meta(const char * fmt, int flags, struct hash * track) {
 						// track tags
 						tagging_item = 't';
 						break;
+					case 'i':
+						// Play/pause status. 'i' for info.
+						if (pausetime) {
+							val = strdup("||");
+						}
+						else {
+							val = strdup("|>");
+						}
+						break;
 					default:
 						val = strdup("");
 						break;
