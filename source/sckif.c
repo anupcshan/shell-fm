@@ -223,7 +223,8 @@ int execcmd(const char * cmd, char * reply) {
 		"volume",
 		"rtp",
 		"status",
-		"detach"
+		"detach",
+		"expand"
 	};
 
 	memset(arg, 0, sizeof(arg));
@@ -398,6 +399,11 @@ int execcmd(const char * cmd, char * reply) {
 		/* Detach from network interface. */
 		case 20:
 			return 1;
+
+		/* Expand the current playlist. */
+		case 21:
+			expand(& playlist);
+			break;
 	}
 
 	return 0;
