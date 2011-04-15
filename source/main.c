@@ -423,7 +423,7 @@ int main(int argc, char ** argv) {
 				nextstation = NULL;
 			}
 
-			if(!enabled(STOPPED) && !playlist.left) {
+			if(!enabled(STOPPED) && (!playlist.left || playlist.left == 1)) {
 				expand(& playlist);
 				if(!playlist.left) {
 					puts("No tracks left.");
