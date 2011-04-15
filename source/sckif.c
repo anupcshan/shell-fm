@@ -194,6 +194,7 @@ void handle_client(int client_socket) {
 		shutdown(SHUT_RDWR, client_socket);
 		close(client_socket);
 		fclose(fd);
+		fd = NULL;
 
 		remove_handle(client_socket);
 	}
