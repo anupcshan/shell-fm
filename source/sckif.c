@@ -126,11 +126,13 @@ int unixsock(const char * path) {
 void rmsckif(void) {
 	if(stcpsck > 0) {
 		close(stcpsck);
+		remove_handle(stcpsck);
 		stcpsck = -1;
 	}
 
 	if(sunixsck > 0) {
 		close(sunixsck);
+		remove_handle(sunixsck);
 		sunixsck = -1;
 	}
 }
@@ -175,7 +177,11 @@ void handle_client(int client_socket) {
 						strncat(reply, "\n", BUFSIZE - strlen(reply));
 						write(client_socket, reply, strlen(reply));
 					}
+
+					free(lines[i]);
 				}
+
+				free(lines);
 			}
 
 			else {
@@ -186,7 +192,7 @@ void handle_client(int client_socket) {
 		}
 	}
 
-	if(disconnect) {
+	if(fd != NULL) {
 		debug("removing client\n");
 		shutdown(SHUT_RDWR, client_socket);
 		close(client_socket);

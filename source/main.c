@@ -636,6 +636,7 @@ static void cleanup(void) {
 static void cleanup_term(void) {
 	if (getpid() == ppid) {
 		canon(1);
+		remove_handle(0);
 	}
 }
 
