@@ -409,11 +409,15 @@ const char * meta(const char * fmt, int flags, struct hash * track) {
 						break;
 					case 'i':
 						// Play/pause status. 'i' for info.
-						if (pausetime) {
-							val = strdup("||");
+						val = value(track, "title");
+						if (!val || val[0] == '\0') {
+							val = strdup("Stopped");
+						}
+						else if (pausetime) {
+							val = strdup("Paused");
 						}
 						else {
-							val = strdup("|>");
+							val = strdup("Playing");
 						}
 						break;
 					default:
