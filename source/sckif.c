@@ -148,11 +148,8 @@ void accept_client(int listen_socket) {
 
 
 void handle_client(int client_socket) {
-	static FILE * fd = NULL;
+	FILE * fd = fdopen(client_socket, "rw");
 	int disconnect = 0;
-
-	if (!fd)
-		fd = fdopen(client_socket, "rw");
 
 	signal(SIGPIPE, SIG_IGN);
 
