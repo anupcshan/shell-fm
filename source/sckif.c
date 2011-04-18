@@ -192,7 +192,7 @@ void handle_client(int client_socket) {
 		}
 	}
 
-	if(fd != NULL) {
+	if(disconnect) {
 		debug("removing client\n");
 		shutdown(SHUT_RDWR, client_socket);
 		close(client_socket);
