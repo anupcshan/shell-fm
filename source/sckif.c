@@ -148,9 +148,70 @@ void accept_client(int listen_socket) {
 		register_client_socket(client_socket);
 }
 
+FILE ** openfds = NULL;
+int * fdsockets = NULL;
+int openfdscount = 0;
+
+FILE * get_fd(int socketnum) {
+	int i;
+	for (i = 0; i < openfdscount; i ++) {
+		if (fdsockets[i] == socketnum)
+			return openfds[i];
+	}
+
+	++ openfdscount;
+
+	if (openfds == NULL) {
+		openfds = (FILE*) malloc(sizeof(FILE));
+	}
+	else {
+		openfds = (FILE*) realloc(openfds, sizeof(FILE) * openfdscount);
+	}
+
+	if (fdsockets == NULL) {
+		fdsockets = (int*) malloc(sizeof(int));
+	}
+	else {
+		fdsockets = (int*) realloc(fdsockets, sizeof(int) * openfdscount);
+	}
+
+	fdsockets[openfdscount - 1] = socketnum;
+	return openfds[openfdscount - 1] = fdopen(socketnum, "rw");
+}
+
+void remove_fd(int socketnum) {
+	int i;
+	for (i = 0; i < openfdscount; i ++) {
+		if (fdsockets[i] == socketnum) {
+			if (openfdscount == 1) {
+				free(openfds);
+				free(fdsockets);
+				fdsockets = openfds = NULL;
+				openfdscount --;
+			}
+			else {
+				openfdscount --;
+				openfds[i] = openfds[openfdscount];
+				fdsockets[i] = fdsockets[openfdscount];
+				openfds = (FILE*) realloc(openfds, sizeof(FILE) * openfdscount);
+				fdsockets = (int*) realloc(fdsockets, sizeof(int) * openfdscount);
+			}
+			return;
+		}
+	}
+}
+
+void cleanup_fds() {
+	int i;
+	for (i = 0; i < openfdscount; i ++) {
+		close(fdsockets[i]);
+	}
+	free(fdsockets);
+	free(openfds);
+}
 
 void handle_client(int client_socket) {
-	FILE * fd = fdopen(client_socket, "rw");
+	FILE * fd = get_fd(client_socket);
 	int disconnect = 0;
 
 	signal(SIGPIPE, SIG_IGN);
@@ -200,6 +261,7 @@ void handle_client(int client_socket) {
 		fd = NULL;
 
 		remove_handle(client_socket);
+		remove_fd(client_socket);
 	}
 }
 

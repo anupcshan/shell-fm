@@ -581,6 +581,7 @@ static void help(const char * argv0, int error_code) {
 
 static void cleanup(void) {
 	rmsckif();
+	cleanup_fds();
 
 	if(haskey(& rc, "unix") && getpid() == ppid)
 		unlink(value(& rc, "unix"));
